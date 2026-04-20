@@ -1139,15 +1139,11 @@ function RefinedApp() {
         title="Primary flow · Open chat, message someone"
         subtitle="The everyday path. No pins, no shares — just the core loop."
       >
-        <Screen label="1. Map tab"
-                sub="Chat lives in the bottom tab bar alongside Map and History. Unread count shows on the icon.">
-          <S0_MapPlain />
-        </Screen>
-        <Screen label="2. Chat tab"
+        <Screen label="1. Chat tab"
                 sub="Team thread pinned at top, direct messages below. Tap a row to open.">
           <S0_SimpleList />
         </Screen>
-        <Screen label="3. 1:1 conversation"
+        <Screen label="2. 1:1 conversation"
                 sub="Standard messaging UI — bubbles, timestamps, a compose bar. Familiar and boring on purpose.">
           <S0_DM />
         </Screen>
