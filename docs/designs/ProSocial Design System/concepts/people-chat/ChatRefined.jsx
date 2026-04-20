@@ -1216,9 +1216,6 @@ function RefinedApp() {
         </Screen>
       </window.DCSection>
 
-      <window.DCPostIt top={-30} left={60} rotate={-3} width={240}>
-        Primary flow is the everyday loop. Secondary features are optional layers — the app works without any of them.
-      </window.DCPostIt>
     </window.DesignCanvas>
   );
 }
