@@ -35,7 +35,8 @@
 
       /* Bundler replaces documentElement, wiping any styles we append now. Poll for
          .cx-switcher in the *new* document and inject the hide rule then. */
-      var iv = setInterval(function () {
+      var iv, to;
+      iv = setInterval(function () {
         if (!document.querySelector(".cx-switcher")) return;
         if (!document.getElementById("__pv_hide_switcher")) {
           var style = document.createElement("style");
@@ -44,8 +45,9 @@
           (document.head || document.documentElement).appendChild(style);
         }
         clearInterval(iv);
+        clearTimeout(to);
       }, 100);
-      setTimeout(function () { clearInterval(iv); }, 15000);
+      to = setTimeout(function () { clearInterval(iv); }, 15000);
     })();
   </script>
   <style>

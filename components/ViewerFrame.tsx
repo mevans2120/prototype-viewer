@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ComponentType } from "react";
 import Link from "next/link";
 import { Badge, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 import {
@@ -14,16 +14,27 @@ import {
   DeviceTabletIcon,
   LinkIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import type { Project, Prototype, VariantGroup } from "@/lib/types";
+import type { Project, Prototype, VariantGroup, VariantOption } from "@/lib/types";
 import { cn, formatDate } from "@/lib/utils";
 
 type Width = "desktop" | "tablet" | "mobile";
+type PhosphorIcon = ComponentType<{ size?: number; weight?: "fill" | "regular" }>;
 
-const WIDTHS: Record<Width, { label: string; px: number | null; Icon: typeof DesktopIcon }> = {
+const WIDTHS: Record<Width, { label: string; px: number | null; Icon: PhosphorIcon }> = {
   desktop: { label: "Desktop", px: null, Icon: DesktopIcon },
   tablet: { label: "Tablet (768)", px: 768, Icon: DeviceTabletIcon },
   mobile: { label: "Mobile (390)", px: 390, Icon: DeviceMobileIcon },
 };
+
+function defaultSelection(groups: VariantGroup[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const g of groups) out[g.id] = g.options[0].id;
+  return out;
+}
+
+function activeOption(group: VariantGroup, selected: Record<string, string>): VariantOption {
+  return group.options.find((o) => o.id === selected[group.id]) ?? group.options[0];
+}
 
 export function ViewerFrame({
   prototype,
@@ -37,20 +48,20 @@ export function ViewerFrame({
   const fileUrl = `/prototypes/${prototype.file}`;
 
   const groups: VariantGroup[] = prototype.variantGroups ?? [];
-  const captionGroups = groups.filter((g) => g.display === "caption");
-  const tabGroups = groups.filter((g) => g.display === "tabs");
+  const { captionGroups, tabGroups } = useMemo(
+    () => ({
+      captionGroups: groups.filter((g) => g.display === "caption"),
+      tabGroups: groups.filter((g) => g.display === "tabs"),
+    }),
+    [groups],
+  );
 
-  const [selected, setSelected] = useState<Record<string, string>>(() => {
-    const out: Record<string, string> = {};
-    for (const g of groups) out[g.id] = g.options[0]!.id;
-    return out;
-  });
+  const [selected, setSelected] = useState<Record<string, string>>(() => defaultSelection(groups));
+  const userChanged = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined" || groups.length === 0) return;
-    const hash = window.location.hash.replace(/^#/, "");
-    if (!hash) return;
-    const params = new URLSearchParams(hash);
+    const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
     setSelected((prev) => {
       const next = { ...prev };
       for (const g of groups) {
@@ -59,7 +70,7 @@ export function ViewerFrame({
       }
       return next;
     });
-    // groups is stable per mounted prototype
+    // groups is stable per mount; re-running would clobber user selections
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,7 +84,7 @@ export function ViewerFrame({
   }, [groups, selected]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !userChanged.current) return;
     const current = window.location.hash.replace(/^#/, "");
     if (current === hashString) return;
     const url = hashString
@@ -95,22 +106,26 @@ export function ViewerFrame({
   }
 
   function cycleCaption(group: VariantGroup, direction: 1 | -1) {
+    userChanged.current = true;
     const idx = group.options.findIndex((o) => o.id === selected[group.id]);
     const nextIdx = (idx + direction + group.options.length) % group.options.length;
-    setSelected((prev) => ({ ...prev, [group.id]: group.options[nextIdx]!.id }));
+    setSelected((prev) => ({ ...prev, [group.id]: group.options[nextIdx].id }));
   }
 
   function selectTab(groupId: string, optionId: string) {
+    userChanged.current = true;
     setSelected((prev) => ({ ...prev, [groupId]: optionId }));
   }
 
   const target = WIDTHS[width];
+  // Iframe re-keys on hash change because prototypes seed their state from
+  // window.location.hash at boot; postMessage would be cheaper but requires
+  // each prototype to cooperate.
   const iframeSrc = hashString ? `${fileUrl}#${hashString}` : fileUrl;
   const iframeKey = `${prototype.slug}-${hashString}`;
-  const mainHeight = groups.length > 0 ? "h-[calc(100vh-184px)]" : "h-[calc(100vh-140px)]";
 
   return (
-    <Flex direction="column" className="min-h-screen">
+    <Flex direction="column" className="h-screen">
       <header className="sticky top-0 z-20 border-b border-stone-200 bg-white/90 backdrop-blur dark:border-stone-800 dark:bg-stone-950/90">
         <Flex align="center" gap="3" px="4" py="2" wrap="wrap">
           <Link href="/" aria-label="Back to gallery">
@@ -135,30 +150,23 @@ export function ViewerFrame({
             </Text>
           </Flex>
 
-          <Flex align="center" gap="1" className="rounded-full border border-stone-200 bg-stone-50 p-1 dark:border-stone-800 dark:bg-stone-900">
+          <PillGroup>
             {(Object.keys(WIDTHS) as Width[]).map((key) => {
               const { label, Icon } = WIDTHS[key];
               const active = key === width;
               return (
                 <Tooltip key={key} content={label}>
-                  <button
-                    type="button"
+                  <PillIconButton
+                    active={active}
                     onClick={() => setWidth(key)}
-                    aria-pressed={active}
                     aria-label={label}
-                    className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-full transition-colors",
-                      active
-                        ? "bg-white text-stone-900 shadow-sm dark:bg-stone-700 dark:text-white"
-                        : "text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200",
-                    )}
                   >
                     <Icon size={16} weight={active ? "fill" : "regular"} />
-                  </button>
+                  </PillIconButton>
                 </Tooltip>
               );
             })}
-          </Flex>
+          </PillGroup>
 
           <Tooltip content={copied ? "Copied!" : "Copy permalink"}>
             <IconButton size="2" variant="soft" color="gray" onClick={handleCopy}>
@@ -181,7 +189,7 @@ export function ViewerFrame({
           <Flex align="center" gap="4" px="4" py="2" wrap="wrap">
             <Flex align="center" gap="5" className="min-w-0 flex-1" wrap="wrap">
               {captionGroups.map((g) => {
-                const opt = g.options.find((o) => o.id === selected[g.id]) ?? g.options[0]!;
+                const opt = activeOption(g, selected);
                 const multi = g.options.length > 1;
                 return (
                   <Flex align="center" gap="2" key={g.id} className="min-w-0">
@@ -228,45 +236,27 @@ export function ViewerFrame({
 
             <Flex gap="3" align="center">
               {tabGroups.map((g) => (
-                <Flex
-                  key={g.id}
-                  className="rounded-full border border-stone-200 bg-stone-50 p-1 dark:border-stone-800 dark:bg-stone-900"
-                  role="tablist"
-                  aria-label={g.id}
-                >
-                  {g.options.map((o) => {
-                    const active = selected[g.id] === o.id;
-                    return (
-                      <button
-                        key={o.id}
-                        type="button"
-                        role="tab"
-                        aria-selected={active}
-                        onClick={() => selectTab(g.id, o.id)}
-                        className={cn(
-                          "rounded-full px-3 py-1 text-sm font-medium transition-colors",
-                          active
-                            ? "bg-stone-900 text-white shadow-sm dark:bg-stone-100 dark:text-stone-900"
-                            : "text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100",
-                        )}
-                      >
-                        {o.label}
-                      </button>
-                    );
-                  })}
-                </Flex>
+                <PillGroup key={g.id} role="tablist" aria-label={g.id}>
+                  {g.options.map((o) => (
+                    <PillButton
+                      key={o.id}
+                      role="tab"
+                      active={selected[g.id] === o.id}
+                      onClick={() => selectTab(g.id, o.id)}
+                    >
+                      {o.label}
+                    </PillButton>
+                  ))}
+                </PillGroup>
               ))}
             </Flex>
           </Flex>
         </div>
       ) : null}
 
-      <main className="flex-1 bg-stone-100 p-4 dark:bg-stone-900">
+      <main className="min-h-0 flex-1 bg-stone-100 p-4 dark:bg-stone-900">
         <div
-          className={cn(
-            "mx-auto overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm transition-[max-width] dark:border-stone-800 dark:bg-stone-950",
-            mainHeight,
-          )}
+          className="mx-auto h-full overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm transition-[max-width] dark:border-stone-800 dark:bg-stone-950"
           style={{ maxWidth: target.px ? `${target.px}px` : "100%" }}
         >
           <iframe
@@ -279,5 +269,69 @@ export function ViewerFrame({
         </div>
       </main>
     </Flex>
+  );
+}
+
+function PillGroup({
+  children,
+  ...rest
+}: {
+  children: React.ReactNode;
+  role?: string;
+  "aria-label"?: string;
+}) {
+  return (
+    <Flex
+      align="center"
+      gap="1"
+      className="rounded-full border border-stone-200 bg-stone-50 p-1 dark:border-stone-800 dark:bg-stone-900"
+      {...rest}
+    >
+      {children}
+    </Flex>
+  );
+}
+
+function PillIconButton({
+  active,
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { active: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      className={cn(
+        "flex h-8 w-8 items-center justify-center rounded-full transition-colors",
+        active
+          ? "bg-white text-stone-900 shadow-sm dark:bg-stone-700 dark:text-white"
+          : "text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200",
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+function PillButton({
+  active,
+  children,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { active: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-selected={active}
+      className={cn(
+        "rounded-full px-3 py-1 text-sm font-medium transition-colors",
+        active
+          ? "bg-stone-900 text-white shadow-sm dark:bg-stone-100 dark:text-stone-900"
+          : "text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100",
+      )}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }

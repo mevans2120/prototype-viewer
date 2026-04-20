@@ -49,6 +49,5 @@ export const ManifestSchema = z.object({
 export type Project = z.infer<typeof ProjectSchema>;
 export type Prototype = z.infer<typeof PrototypeSchema>;
 export type Manifest = z.infer<typeof ManifestSchema>;
-export type PrototypeSource = z.infer<typeof PrototypeSourceSchema>;
 export type VariantGroup = z.infer<typeof VariantGroupSchema>;
 export type VariantOption = z.infer<typeof VariantOptionSchema>;
