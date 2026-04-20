@@ -41,9 +41,9 @@
 
       /* Bundler replaces documentElement, wiping any styles we append now. Poll for
          .cx-switcher in the *new* document and inject the hide rule then. Also
-         relocates the ConceptADock composer out of the full-width bottom bar
-         into the drawer's bottom, so the chat input reads as part of the drawer
-         instead of extending past its right edge. */
+         narrows the ConceptADock composer so it doesn't extend to the drawer's
+         right edge — leaves the composer in the bottom bar inline with the chat
+         icon, but with breathing room before the drawer's visible edge. */
       var iv, to;
       iv = setInterval(function () {
         if (!document.querySelector(".cx-switcher")) return;
@@ -52,23 +52,7 @@
           style.id = "__pv_overrides";
           style.textContent =
             ".cx-switcher{display:none !important;}" +
-            /* When the dock's drawer is open, lift the composer out of the
-               full-width bar and anchor it inside the drawer's bottom, centered
-               horizontally within the drawer's 400px column. */
-            ".cA-drawer.open ~ .cA-bar .cA-bar-composer{" +
-              "position:fixed !important;" +
-              "left:20px !important;right:auto !important;" +
-              "width:360px !important;" +
-              "bottom:74px !important;margin:0 !important;" +
-              "background:var(--color-surface-raised) !important;" +
-              "border:1px solid var(--color-border-default) !important;" +
-              "border-radius:999px !important;" +
-              "padding:4px 6px !important;" +
-              "box-shadow:0 2px 12px rgba(10,40,82,0.08);" +
-              "z-index:45;" +
-            "}" +
-            ".cA-drawer.open .cA-drawer-scroll{padding-bottom:56px !important;}" +
-            ".cA-drawer.open ~ .cA-bar .cA-bar-inner{justify-content:space-between !important;}";
+            ".cA-bar-composer{width:260px !important;}";
           (document.head || document.documentElement).appendChild(style);
         }
         clearInterval(iv);
