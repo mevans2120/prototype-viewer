@@ -33,9 +33,11 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
   const tf = React.useRef({ x: 0, y: 0, scale: 1 });
 
   const apply = React.useCallback(() => {
-    const { x, y, scale } = tf.current;
+    const t = tf.current;
+    // Lock the world's top edge to the viewport top — no panning up past the start.
+    if (t.y > 0) t.y = 0;
     const el = worldRef.current;
-    if (el) el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+    if (el) el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0) scale(${t.scale})`;
   }, []);
 
   React.useEffect(() => {

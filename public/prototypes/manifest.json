@@ -7,8 +7,8 @@
   "prototypes": [
     {
       "slug": "people-chat-refined",
-      "title": "ProSocial — People Chat (Refined)",
-      "description": "Refined people-chat concept with pin-sharing affordances. Shown on a Figma-style pan/zoom design canvas.",
+      "title": "People app — Chat Concept",
+      "description": "Chat concept for the SwingLeft People app.",
       "file": "people-chat.html",
       "project": "prosocial",
       "tags": ["chat", "concept", "canvas"],

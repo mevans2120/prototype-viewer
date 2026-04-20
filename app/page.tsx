@@ -1,11 +1,9 @@
 import { Container, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { PrototypeCard } from "@/components/PrototypeCard";
-import { getPrototypes, getProjects } from "@/lib/manifest";
+import { getPrototypes } from "@/lib/manifest";
 
 export default function HomePage() {
   const prototypes = getPrototypes();
-  const projects = getProjects();
-  const projectById = new Map(projects.map((p) => [p.id, p]));
 
   return (
     <Container size="4" px="4" py="8">
@@ -27,11 +25,7 @@ export default function HomePage() {
         ) : (
           <Grid columns={{ initial: "1", sm: "2", md: "3" }} gap="4">
             {prototypes.map((prototype) => (
-              <PrototypeCard
-                key={prototype.slug}
-                prototype={prototype}
-                project={projectById.get(prototype.project ?? "")}
-              />
+              <PrototypeCard key={prototype.slug} prototype={prototype} />
             ))}
           </Grid>
         )}

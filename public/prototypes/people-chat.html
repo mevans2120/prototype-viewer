@@ -52,9 +52,11 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
   const tf = React.useRef({ x: 0, y: 0, scale: 1 });
 
   const apply = React.useCallback(() => {
-    const { x, y, scale } = tf.current;
+    const t = tf.current;
+    // Lock the world's top edge to the viewport top — no panning up past the start.
+    if (t.y > 0) t.y = 0;
     const el = worldRef.current;
-    if (el) el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+    if (el) el.style.transform = `translate3d(${t.x}px, ${t.y}px, 0) scale(${t.scale})`;
   }, []);
 
   React.useEffect(() => {
@@ -534,7 +536,7 @@ function BigBtn({ icon, label, color = _P_BLUE }) {
 function FAB() {
   return (
     <div style={{
-      position: 'absolute', bottom: 96, left: '50%',
+      position: 'absolute', bottom: 97, left: '50%',
       width: 56, height: 56, borderRadius: 28, background: _P_BLUE,
       color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
       boxShadow: '0 8px 20px rgba(31,63,217,0.45), 0 2px 4px rgba(0,0,0,0.12)', zIndex: 25,
@@ -643,6 +645,7 @@ function S2_PinSheet() {
           <window.IconChevR size={16} style={{ color: _INK_4 }}/>
         </div>
       </div>
+      <FAB />
       <RTabs active="map" />
     </div>
   );
@@ -862,6 +865,7 @@ function S3_ChatList({ tab = 'All' }) {
           isLast
         />
       </div>
+      <FAB />
       <RTabs active="chat" />
     </div>
   );
@@ -1232,6 +1236,35 @@ function S0_DM() {
         <Bubble own text="Thanks 🙏" time="9:50" />
         <Bubble from="Rachel Ortega" showAvatar time="9:52"
           text="How's the block going?" />
+        {/* Location share message */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, marginBottom: 10 }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 13, background: _P_BLUE, color: '#fff',
+            fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, marginBottom: 18,
+          }}>RO</div>
+          <div style={{
+            background: '#fff', border: `1px solid ${_LINE}`, borderRadius: 16,
+            padding: 8, maxWidth: 240, boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+          }}>
+            <div style={{
+              height: 110, width: 220, background: _MAP_BG, borderRadius: 10, position: 'relative',
+              overflow: 'hidden',
+            }}>
+              <div style={{
+                position: 'absolute', top: '50%', left: '50%',
+                transform: 'translate(-50%, -100%)',
+                color: _P_BLUE,
+              }}>
+                <IconPin size={30} stroke={2} fill={_P_BLUE_LIGHT} />
+              </div>
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: _INK, marginTop: 8, padding: '0 4px' }}>
+              5344 SE Knapp St
+            </div>
+            <div style={{ fontSize: 11, color: _INK_3, padding: '0 4px 2px' }}>Rachel's location · now</div>
+          </div>
+        </div>
       </div>
       <div style={{
         position: 'absolute', left: 0, right: 0, bottom: 0,
@@ -1313,6 +1346,7 @@ function S0_SimpleList() {
         <RRow avatar={<RowAvatar initials="TW" />} title="Tom Whittaker"
           preview="See you at 5 for debrief" time="Yesterday" isLast />
       </div>
+      <FAB />
       <RTabs active="chat" />
     </div>
   );
@@ -1324,16 +1358,6 @@ function S0_MapPlain() {
     <div style={{ position: 'absolute', inset: 0, background: '#fff' }}>
       <RMap />
       <RTopHeader />
-      <div style={{
-        position: 'absolute', left: 0, right: 0, bottom: 83,
-        background: '#fff', padding: '14px 16px 16px',
-        borderTopLeftRadius: 14, borderTopRightRadius: 14,
-        boxShadow: '0 -2px 10px rgba(0,0,0,0.08)',
-        display: 'flex', flexDirection: 'column', gap: 10,
-      }}>
-        <BigBtn icon={<IconHome size={18} />} label="Add address" />
-        <BigBtn icon={<IconUser size={18} />} label="Add person" />
-      </div>
       <FAB />
       <RTabs active="map" />
     </div>
@@ -1393,7 +1417,7 @@ function RefinedApp() {
           Chat tab in the People app
         </div>
         <div style={{ fontSize: 16, color: '#555', lineHeight: 1.55, maxWidth: 760, marginTop: 14 }}>
-          A Chat tab joins Map and History. Start with the basics below — open Chat, pick someone, send a message. <strong>Secondary features</strong> (pinning threads to addresses, sharing warnings from the map, the team thread) are explored further down.
+          A Chat tab joins Map and History. Open Chat, pick someone, send a message — including a simple location share when you need to say where you are.
         </div>
       </div>
 
@@ -1402,91 +1426,17 @@ function RefinedApp() {
         title="Primary flow · Open chat, message someone"
         subtitle="The everyday path. No pins, no shares — just the core loop."
       >
-        <Screen label="1. Chat tab"
+        <Screen label="1. Map tab"
+                sub="Chat lives in the bottom tab bar alongside Map and History. Unread count shows on the icon.">
+          <S0_MapPlain />
+        </Screen>
+        <Screen label="2. Chat tab"
                 sub="Team thread pinned at top, direct messages below. Tap a row to open.">
           <S0_SimpleList />
         </Screen>
-        <Screen label="2. 1:1 conversation"
+        <Screen label="3. 1:1 conversation"
                 sub="Standard messaging UI — bubbles, timestamps, a compose bar. Familiar and boring on purpose.">
           <S0_DM />
-        </Screen>
-      </window.DCSection>
-
-      {/* SECONDARY FEATURES */}
-      <div style={{ padding: '60px 60px 20px', maxWidth: 980 }}>
-        <div style={{
-          fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase',
-          color: '#888', marginBottom: 8,
-        }}>Secondary features</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: '#1a1a1a', letterSpacing: -0.5 }}>
-          Sharing from the field
-        </div>
-        <div style={{ fontSize: 15, color: '#555', lineHeight: 1.55, maxWidth: 720, marginTop: 10 }}>
-          Beyond basic messaging, volunteers can drop <strong>warnings</strong>, <strong>notes</strong>, <strong>help requests</strong>, and <strong>address shares</strong> as pins on the map. Those pins open threaded conversations that appear in the Chat tab under a &quot;Pinned to map&quot; section — one inbox, two ways to enter it.
-        </div>
-      </div>
-
-      {/* Pin vocabulary moved here (inside secondary features) */}
-      <div style={{ padding: '0 60px 40px', maxWidth: 980 }}>
-        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.4, textTransform: 'uppercase',
-          color: '#888', marginBottom: 16 }}>Pin vocabulary</div>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          {[
-            { kind: 'warning', title: 'Warning', desc: 'Locked gate, dog, skip-the-house' },
-            { kind: 'note',    title: 'Note',    desc: 'Helpful tip for the next canvasser' },
-            { kind: 'help',    title: 'Help',    desc: 'Pings captain + nearby volunteers' },
-            { kind: 'done',    title: 'Done',    desc: 'Quick ack — block finished' },
-          ].map(p => {
-            const k = PinKinds[p.kind];
-            return (
-              <div key={p.kind} style={{
-                background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 10,
-                padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'center', minWidth: 230,
-              }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: 10, background: k.bg, color: k.color,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 800, fontSize: 15, border: `1.5px solid ${k.color}`,
-                }}>{k.icon}</div>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: _INK }}>{p.title}</div>
-                  <div style={{ fontSize: 11, color: _INK_3, marginTop: 2 }}>{p.desc}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <window.DCSection
-        title="A · Pinning from the map"
-        subtitle="Canvassers share intel where they are. Every pin becomes a thread."
-      >
-        <Screen label="Map with live team pins"
-                sub="Bubble pins sit above buildings. Color = purpose; unread badge = new activity in that thread.">
-          <S1_MapWithPins />
-        </Screen>
-        <Screen label="Long-press → share sheet"
-                sub="Flag a warning, leave a note, ask for help, or start a chat anchored to an address.">
-          <S2_PinSheet />
-        </Screen>
-      </window.DCSection>
-
-      <window.DCSection
-        title="B · Pinned threads in Chat"
-        subtitle="The Chat tab gains a section for map-anchored conversations and a richer attach rail."
-      >
-        <Screen label="Chat list with pinned threads"
-                sub="Pinned threads get a colored square icon and a Pin label, grouped above DMs.">
-          <S3_ChatList />
-        </Screen>
-        <Screen label="Pinned conversation"
-                sub="Header shows a mini-map. Composer reads &quot;Reply about 5329&quot; — always clear what you're talking about.">
-          <S4_PinnedConvo />
-        </Screen>
-        <Screen label="Team chat + attach rail"
-                sub="The + composer opens every share type: photo, pin, warning, address, person, help.">
-          <S5_TeamChatRail />
         </Screen>
       </window.DCSection>
 
