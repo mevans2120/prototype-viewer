@@ -538,7 +538,7 @@ function FAB() {
       width: 56, height: 56, borderRadius: 28, background: _P_BLUE,
       color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
       boxShadow: '0 8px 20px rgba(31,63,217,0.45), 0 2px 4px rgba(0,0,0,0.12)', zIndex: 25,
-      transform: 'translateX(-50%) rotate(45deg)',
+      transform: 'translateX(-50%)',
     }}><window.IconPlus size={26} /></div>
   );
 }
@@ -556,17 +556,6 @@ function S1_MapWithPins() {
         <MapPin key="p4" top={310} left={270} kind="help"    label="Need help" avatar="JL" unread={1} />,
       ]} />
       <RTopHeader />
-      {/* action sheet preserved */}
-      <div style={{
-        position: 'absolute', left: 0, right: 0, bottom: 83,
-        background: '#fff', padding: '14px 16px 16px',
-        borderTopLeftRadius: 14, borderTopRightRadius: 14,
-        boxShadow: '0 -2px 10px rgba(0,0,0,0.08)',
-        display: 'flex', flexDirection: 'column', gap: 10,
-      }}>
-        <BigBtn icon={<window.IconHome size={18} />} label="Add address" />
-        <BigBtn icon={<window.IconUser size={18} />} label="Add person" />
-      </div>
       <FAB />
       <RTabs active="map" />
     </div>
