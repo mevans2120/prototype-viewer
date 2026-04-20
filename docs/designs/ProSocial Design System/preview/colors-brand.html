@@ -1,0 +1,259 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><title>Brand colors</title></head><body>
+<style>
+  body { padding: 24px; }
+  .section { margin-bottom: 22px; }
+  .eyebrow {
+    font: 700 10px/1 "Archivo", sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-bottom: 10px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .swatch { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .chip {
+    height: 68px;
+    border-radius: 10px;
+    border: 1px solid rgba(10,40,82,0.06);
+  }
+  .chip.bordered { border: 1px solid var(--color-default); }
+  .name {
+    font: 600 12px "Archivo", sans-serif;
+    color: var(--color-text-primary);
+    letter-spacing: 0.01em;
+  }
+  .meta {
+    font: 500 10px "Archivo", sans-serif;
+    color: var(--color-text-dim);
+    font-variant-numeric: tabular-nums;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .meta .token { color: var(--color-text-tertiary); }
+
+  /* Dark-mode wrapper — scopes [data-theme="dark"] so all nested var() lookups hit the overrides */
+  .dark-wrap {
+    margin-top: 32px;
+    padding: 24px;
+    border-radius: 14px;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+  .dark-wrap .chip { border-color: rgba(255,255,255,0.08); }
+  .dark-wrap .chip.bordered { border-color: var(--color-default); }
+  .dark-wrap .meta { color: var(--color-text-dim); }
+  .dark-wrap .meta .token { color: var(--color-text-tertiary); }
+  .dark-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+  .dark-note { font: 500 11px "Archivo", sans-serif; color: var(--color-text-tertiary); }
+</style>
+
+<!-- ————— Primary brand ————— -->
+<div class="section">
+  <div class="eyebrow">Primary · Navy</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-brand)"></div>
+      <div class="name">Brand</div>
+      <div class="meta"><span>#0A2852</span><span class="token">--color-brand</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-brand-dark)"></div>
+      <div class="name">Brand Dark</div>
+      <div class="meta"><span>#071D3E</span><span class="token">--color-brand-dark</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-text-secondary)"></div>
+      <div class="name">Body</div>
+      <div class="meta"><span>#2D4A6E</span><span class="token">--color-text-secondary</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-text-tertiary)"></div>
+      <div class="name">Supporting</div>
+      <div class="meta"><span>#4A6080</span><span class="token">--color-text-tertiary</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————— Accent ————— -->
+<div class="section">
+  <div class="eyebrow">Accent · Plum</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-accent)"></div>
+      <div class="name">Accent</div>
+      <div class="meta"><span>#5E3D82</span><span class="token">--color-accent</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-accent-dark)"></div>
+      <div class="name">Accent Dark</div>
+      <div class="meta"><span>#4E3270</span><span class="token">--color-accent-dark</span></div>
+    </div>
+    <div class="swatch"></div>
+    <div class="swatch"></div>
+  </div>
+</div>
+
+<!-- ————— Surfaces ————— -->
+<div class="section">
+  <div class="eyebrow">Surfaces</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="chip bordered" style="background: var(--color-surface)"></div>
+      <div class="name">Surface</div>
+      <div class="meta"><span>#F5F7FA</span><span class="token">--color-surface</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip bordered" style="background: var(--color-surface-raised)"></div>
+      <div class="name">Raised</div>
+      <div class="meta"><span>#FFFFFF</span><span class="token">--color-surface-raised</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-surface-subtle)"></div>
+      <div class="name">Subtle</div>
+      <div class="meta"><span>#E8F4FC</span><span class="token">--color-surface-subtle</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-default)"></div>
+      <div class="name">Border</div>
+      <div class="meta"><span>#C8DDF0</span><span class="token">--color-default</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————— Text tints ————— -->
+<div class="section">
+  <div class="eyebrow">Text · Full scale</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-text-primary)"></div>
+      <div class="name">Primary</div>
+      <div class="meta"><span>#0A2852</span><span class="token">--color-text-primary</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-text-muted)"></div>
+      <div class="name">Muted</div>
+      <div class="meta"><span>#3D5A7A</span><span class="token">--color-text-muted</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-text-dim)"></div>
+      <div class="name">Dim</div>
+      <div class="meta"><span>#7D93AB</span><span class="token">--color-text-dim</span></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background: var(--color-subtle)"></div>
+      <div class="name">Subtle stroke</div>
+      <div class="meta"><span>#B8CEE0</span><span class="token">--color-subtle</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ————— Dark mode ————— -->
+<div class="dark-wrap" data-theme="dark">
+  <div class="dark-head">
+    <div class="eyebrow" style="color: var(--color-text-dim); margin: 0;">Dark mode · [data-theme="dark"]</div>
+    <span class="dark-note">Only tokens listed below are overridden; everything else inherits from light.</span>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow" style="color: var(--color-text-dim);">Brand</div>
+    <div class="grid">
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-brand)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Brand</div>
+        <div class="meta"><span>#00C4FF</span><span class="token">--color-brand</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-brand-dark)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Brand Dark</div>
+        <div class="meta"><span>#00B0E6</span><span class="token">--color-brand-dark</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-accent)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Accent</div>
+        <div class="meta"><span>#5E3D82</span><span class="token">inherits light</span></div>
+      </div>
+      <div class="swatch"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow" style="color: var(--color-text-dim);">Surfaces</div>
+    <div class="grid">
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-surface)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Surface</div>
+        <div class="meta"><span>#111827</span><span class="token">--color-surface</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-surface-raised)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Raised</div>
+        <div class="meta"><span>#1F2937</span><span class="token">--color-surface-raised</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-surface-subtle)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Subtle</div>
+        <div class="meta"><span>#374151</span><span class="token">--color-surface-subtle</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-default)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Border</div>
+        <div class="meta"><span>#374151</span><span class="token">--color-default</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="eyebrow" style="color: var(--color-text-dim);">Text · Full scale</div>
+    <div class="grid">
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-text-primary)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Primary</div>
+        <div class="meta"><span>#F9FAFB</span><span class="token">--color-text-primary</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-text-secondary)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Secondary</div>
+        <div class="meta"><span>#D1D5DB</span><span class="token">--color-text-secondary</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-text-tertiary)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Tertiary</div>
+        <div class="meta"><span>#9CA3AF</span><span class="token">--color-text-tertiary</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-text-dim)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Dim</div>
+        <div class="meta"><span>#6B7280</span><span class="token">--color-text-dim</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic-light overrides: these are *backgrounds* for info/green/blue/gold pills.
+       They change from near-white tints to deep dark-tinted fills. -->
+  <div class="section" style="margin-bottom: 0;">
+    <div class="eyebrow" style="color: var(--color-text-dim);">Semantic · *-light overrides</div>
+    <div class="grid">
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-info-light)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Info light</div>
+        <div class="meta"><span>#0C4A6E</span><span class="token">--color-info-light</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-green-light)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Green light</div>
+        <div class="meta"><span>#052E16</span><span class="token">--color-green-light</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-blue-light)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Blue light</div>
+        <div class="meta"><span>#172554</span><span class="token">--color-blue-light</span></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: var(--color-gold-light)"></div>
+        <div class="name" style="color: var(--color-text-primary)">Gold light</div>
+        <div class="meta"><span>#451A03</span><span class="token">--color-gold-light</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>

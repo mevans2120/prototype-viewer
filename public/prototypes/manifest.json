@@ -6,6 +6,17 @@
   ],
   "prototypes": [
     {
+      "slug": "people-chat-refined",
+      "title": "ProSocial — People Chat (Refined)",
+      "description": "Refined people-chat concept with pin-sharing affordances. Shown on a Figma-style pan/zoom design canvas.",
+      "file": "people-chat.html",
+      "project": "prosocial",
+      "tags": ["chat", "concept", "canvas"],
+      "createdAt": "2026-04-20",
+      "source": "hand-coded",
+      "notes": "Pan/zoom the canvas to explore multiple screens."
+    },
+    {
       "slug": "creator-team-chat",
       "title": "Creator Dashboard — Team Chat",
       "description": "Concept for in-app team chat inside the Creator dashboard. Warm palette, Georgia display type.",

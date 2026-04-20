@@ -1,0 +1,158 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><title>Action buttons</title></head><body>
+<style>
+  :root {
+    /* Tier colors mirrored from getTierColors() */
+    --tier-1-bg: var(--color-info-light);   --tier-1-border: rgba(0,168,224,0.3);  --tier-1-text: var(--color-info);   /* 1 of N — info cyan */
+    --tier-2-bg: var(--color-blue-light);   --tier-2-border: rgba(37,99,235,0.3);  --tier-2-text: var(--color-blue);   /* 2..N-1 — blue */
+    --tier-max-bg: var(--color-gold-light); --tier-max-border: rgba(217,119,6,0.3); --tier-max-text: var(--color-gold); /* all — gold */
+  }
+
+  .group {
+    padding: 20px 22px;
+    border: 1px solid var(--color-default);
+    border-radius: 12px;
+    background: var(--color-surface-raised);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .group + .group { margin-top: 14px; }
+  .group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .group-head .title { font: 600 13px var(--font-display); color: var(--color-text-primary); letter-spacing: 0.01em; }
+  .group-head .meta { font: 500 11px var(--font-sans); color: var(--color-text-dim); }
+  .prompt { font: 600 13px var(--font-display); color: var(--color-text-primary); margin: 2px 0 2px; }
+  .prompt.with-check { display: inline-flex; align-items: center; gap: 8px; }
+  .actions-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .act {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 500; font-size: 13px;
+    border-radius: 10px;
+    border: 1px solid var(--color-brand);
+    color: var(--color-brand);
+    background: var(--color-surface-raised);
+    transition: font-weight 0.15s;
+  }
+  .act:hover { font-weight: 600; }
+
+  /* Done states — tier-tinted fill + subtle colored border */
+  .act.tier-1 { background: var(--tier-1-bg); border-color: var(--tier-1-border); color: var(--tier-1-text); }
+  .act.tier-2 { background: var(--tier-2-bg); border-color: var(--tier-2-border); color: var(--tier-2-text); }
+  .act.tier-max { background: var(--tier-max-bg); border-color: var(--tier-max-border); color: var(--tier-max-text); }
+
+  /* Check icon inherits tier color via currentColor */
+  .tier-check { color: currentColor; display: inline-flex; }
+</style>
+
+<!-- ============ 1. Default — "Mark what you did" ============ -->
+<div class="group">
+  <div class="group-head">
+    <span class="title">Default state — nothing marked yet</span>
+    <span class="meta">solid brand border · no tier color</span>
+  </div>
+  <div class="prompt">Mark what you did</div>
+  <div class="actions-row">
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      I Watched
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      I Liked
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      I Commented
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      I Shared
+    </span>
+  </div>
+</div>
+
+<!-- ============ 2. Partial — 1 of 4 done → tier-1 (info/cyan) ============ -->
+<div class="group">
+  <div class="group-head">
+    <span class="title">1 of 4 done → tier 1 (info)</span>
+    <span class="meta">done pills + remaining default</span>
+  </div>
+  <div class="actions-row">
+    <span class="act tier-1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      I Liked (+1pt)
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      I Watched
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      I Commented
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      I Shared
+    </span>
+  </div>
+</div>
+
+<!-- ============ 3. Partial — 2+ of 4 done → tier-2 (blue) ============ -->
+<div class="group">
+  <div class="group-head">
+    <span class="title">2–3 of 4 done → tier 2 (blue)</span>
+    <span class="meta">all done pills shift to blue together</span>
+  </div>
+  <div class="actions-row">
+    <span class="act tier-2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      I Liked (+1pt)
+    </span>
+    <span class="act tier-2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      I Commented (+2pts)
+    </span>
+    <span class="act tier-2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      I Shared (+4pts)
+    </span>
+    <span class="act">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      I Watched
+    </span>
+  </div>
+</div>
+
+<!-- ============ 4. Complete — all done → tier-max (gold) ============ -->
+<div class="group">
+  <div class="group-head">
+    <span class="title">All 4 done → tier max (gold)</span>
+    <span class="meta">celebration state · all pills + check turn gold</span>
+  </div>
+  <div class="prompt with-check" style="color: var(--tier-max-text);">
+    <span class="tier-check">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </span>
+    All done! You amplified this post.
+  </div>
+  <div class="actions-row">
+    <span class="act tier-max">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      I Watched (+3pts)
+    </span>
+    <span class="act tier-max">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      I Liked (+1pt)
+    </span>
+    <span class="act tier-max">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      I Commented (+2pts)
+    </span>
+    <span class="act tier-max">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      I Shared (+4pts)
+    </span>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>ProSocial — Typography</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; padding: 48px 56px 80px; background: var(--color-surface); }
+  .page { max-width: 1280px; margin: 0 auto; }
+
+  /* Top meta */
+  .top { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--color-default); }
+  .top h1 { font: 700 40px/1.1 var(--font-display); color: var(--color-text-primary); letter-spacing: -0.015em; margin: 0 0 8px; }
+  .top .lede { font: 400 17px/1.55 var(--font-sans); color: var(--color-text-tertiary); margin: 0; max-width: 560px; }
+  .top .eyebrow { font: 700 12px var(--font-display); letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-brand); margin-bottom: 12px; display: block; }
+  .top .families { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; max-width: 480px; }
+  .top .families span { font: 500 12px var(--font-sans); color: var(--color-text-muted); padding: 6px 11px; border: 1px solid var(--color-default); border-radius: 999px; background: var(--color-surface-raised); }
+
+  /* Card grid — one column, each card is a family */
+  .cards { display: flex; flex-direction: column; gap: 28px; }
+
+  .card {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .card-head {
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: end;
+    border-bottom: 1px solid var(--color-default);
+    background: var(--color-surface-subtle);
+  }
+  .card-head .name { font: 700 28px/1 var(--font-display); color: var(--color-text-primary); margin: 0; letter-spacing: -0.01em; }
+  .card-head .role { font: 600 11px var(--font-display); letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-brand); margin-bottom: 6px; }
+  .card-head .descr { font: 400 14px/1.5 var(--font-sans); color: var(--color-text-tertiary); margin: 6px 0 0; max-width: 560px; }
+  .card-head .tokens { text-align: right; font: 500 11px/1.5 var(--font-sans); color: var(--color-text-dim); }
+  .card-head .tokens code { font: 500 11px/1.5 ui-monospace, "SF Mono", Menlo, monospace; color: var(--color-text-muted); background: var(--color-surface-raised); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--color-default); display: inline-block; margin-top: 2px; }
+
+  .card-body { padding: 32px; }
+
+  /* Hero display */
+  .display { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px dashed var(--color-default); }
+  .display .big { margin: 0 0 4px; letter-spacing: -0.02em; }
+  .display .meta { font: 500 11px var(--font-display); letter-spacing: 1.2px; text-transform: uppercase; color: var(--color-text-dim); }
+
+  /* Weight ladder */
+  .ladder { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+  .ladder .row { display: grid; grid-template-columns: 56px 1fr auto; gap: 20px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--color-surface-subtle); }
+  .ladder .row:last-child { border-bottom: none; }
+  .ladder .row .w { font: 500 11px var(--font-display); letter-spacing: 0.8px; text-transform: uppercase; color: var(--color-text-dim); }
+  .ladder .row .sample { font-size: 22px; line-height: 1.25; color: var(--color-text-primary); }
+  .ladder .row .spec { font: 500 11px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--color-text-dim); text-align: right; }
+
+  /* Semantic token grid */
+  .tokens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 36px; margin-bottom: 36px; padding-top: 28px; border-top: 1px dashed var(--color-default); }
+  .tok .tok-label { font: 500 11px var(--font-display); letter-spacing: 0.8px; text-transform: uppercase; color: var(--color-text-dim); margin-bottom: 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .tok .tok-label code { font: 500 10px ui-monospace, "SF Mono", Menlo, monospace; color: var(--color-brand); letter-spacing: 0; text-transform: none; }
+  .tok .preview { color: var(--color-text-primary); }
+
+  /* Character set */
+  .charset { padding-top: 28px; border-top: 1px dashed var(--color-default); }
+  .charset h3 { font: 600 13px var(--font-display); letter-spacing: 0.4px; text-transform: uppercase; color: var(--color-text-tertiary); margin: 0 0 14px; }
+  .charset .glyphs { font-size: 28px; line-height: 1.3; color: var(--color-text-primary); letter-spacing: 0.02em; }
+  .charset .glyphs .row { margin: 4px 0; }
+
+  /* Pairing block — shared at bottom */
+  .pairing {
+    margin-top: 8px;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-default);
+    border-radius: var(--radius-lg);
+    padding: 44px 56px;
+    max-width: 760px;
+  }
+  .pairing .eyebrow { font: 700 12px var(--font-display); letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-brand); margin-bottom: 18px; display: block; }
+  .pairing h2 { font: 700 34px/1.15 var(--font-display); color: var(--color-text-primary); letter-spacing: -0.015em; margin: 0 0 16px; }
+  .pairing p { font: 400 17px/1.6 var(--font-sans); color: var(--color-text-secondary); margin: 0 0 14px; max-width: 620px; }
+  .pairing .pull { font: italic 400 22px/1.5 var(--font-serif); color: var(--color-text-primary); margin: 22px 0; padding-left: 20px; border-left: 3px solid var(--color-accent); max-width: 580px; }
+  .pairing .meta { font: 600 11px var(--font-display); letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-text-dim); margin-top: 24px; }
+
+  /* Family-specific sizing for card heros */
+  .card.archivo .display .big { font: 700 72px var(--font-display); color: var(--color-text-primary); }
+  .card.source-sans .display .big { font: 400 62px var(--font-sans); color: var(--color-text-primary); }
+  .card.source-sans .display .big b { font-weight: 700; }
+  .card.newsreader .display .big { font: italic 400 68px/1.1 var(--font-serif); color: var(--color-text-primary); }
+
+  .card.archivo .tok .preview { font-family: var(--font-display); }
+  .card.source-sans .tok .preview { font-family: var(--font-sans); }
+  .card.newsreader .tok .preview { font-family: var(--font-serif); }
+
+  .card.archivo .ladder .sample { font-family: var(--font-display); }
+  .card.source-sans .ladder .sample { font-family: var(--font-sans); }
+  .card.newsreader .ladder .sample { font-family: var(--font-serif); }
+
+  .card.archivo .charset .glyphs { font-family: var(--font-display); }
+  .card.source-sans .charset .glyphs { font-family: var(--font-sans); }
+  .card.newsreader .charset .glyphs { font-family: var(--font-serif); font-style: italic; }
+
+  /* Token-based previews */
+  .tok-display-xl { font: var(--text-display-xl); }
+  .tok-display-lg { font: var(--text-display-lg); }
+  .tok-h1 { font: var(--text-h1); }
+  .tok-h2 { font: var(--text-h2); }
+  .tok-h3 { font: var(--text-h3); }
+  .tok-body-lg { font: var(--text-body-lg); }
+  .tok-body { font: var(--text-body); }
+  .tok-body-sm { font: var(--text-body-sm); }
+  .tok-label { font: var(--text-label); letter-spacing: 0.6px; text-transform: uppercase; }
+  .tok-eyebrow { font: var(--text-eyebrow); letter-spacing: var(--letter-eyebrow); text-transform: uppercase; color: var(--color-brand); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <div>
+      <span class="eyebrow">ProSocial · Typography</span>
+      <h1>Three type families, one voice.</h1>
+      <p class="lede">Archivo sets the structural tone — headings, UI, and anything that needs to feel confident. Source Sans 3 carries the reading load. Newsreader drops in for editorial moments: pull-quotes, welcome notes, the occasional flourish.</p>
+    </div>
+    <div class="families">
+      <span>Archivo · Display + UI</span>
+      <span>Source Sans 3 · Body</span>
+      <span>Newsreader · Editorial</span>
+    </div>
+  </header>
+
+  <div class="cards">
+
+    <!-- =========================================
+         ARCHIVO — Display / UI
+         ========================================= -->
+    <section class="card archivo">
+      <div class="card-head">
+        <div>
+          <span class="role">Display &amp; UI · Primary</span>
+          <h2 class="name">Archivo</h2>
+          <p class="descr">A grotesque with geometric bones. Used for every heading, button label, pill, eyebrow, and data readout. Carries the product's voice.</p>
+        </div>
+        <div class="tokens">
+          variable · 100–900<br/>
+          normal · italic<br/>
+          <code>--font-display</code>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Hero display -->
+        <div class="display">
+          <p class="big">Tuesday&nbsp;night, together.</p>
+          <p class="meta">Archivo · 72 / Bold · −0.02em</p>
+        </div>
+
+        <!-- Weight ladder -->
+        <div class="ladder">
+          <div class="row"><span class="w">Light 300</span><span class="sample" style="font-weight:300">Small businesses amplified</span><span class="spec">Archivo 22/300</span></div>
+          <div class="row"><span class="w">Regular 400</span><span class="sample" style="font-weight:400">Small businesses amplified</span><span class="spec">Archivo 22/400</span></div>
+          <div class="row"><span class="w">Medium 500</span><span class="sample" style="font-weight:500">Small businesses amplified</span><span class="spec">Archivo 22/500</span></div>
+          <div class="row"><span class="w">Semi 600</span><span class="sample" style="font-weight:600">Small businesses amplified</span><span class="spec">Archivo 22/600</span></div>
+          <div class="row"><span class="w">Bold 700</span><span class="sample" style="font-weight:700">Small businesses amplified</span><span class="spec">Archivo 22/700</span></div>
+          <div class="row"><span class="w">Italic</span><span class="sample" style="font-weight:500;font-style:italic">Small businesses amplified</span><span class="spec">Archivo 22/500i</span></div>
+        </div>
+
+        <!-- Semantic token grid -->
+        <div class="tokens-grid">
+          <div class="tok">
+            <div class="tok-label">Display XL <code>--text-display-xl</code></div>
+            <div class="preview tok-display-xl">Swing Left Iowa</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Display LG <code>--text-display-lg</code></div>
+            <div class="preview tok-display-lg">Tuesday night session</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">H1 <code>--text-h1</code></div>
+            <div class="preview tok-h1">Pick your teammates</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">H2 <code>--text-h2</code></div>
+            <div class="preview tok-h2">Here's who's showing up tonight</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">H3 <code>--text-h3</code></div>
+            <div class="preview tok-h3">Pinned · from David</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Label <code>--text-label</code></div>
+            <div class="preview tok-label" style="color:var(--color-text-dim)">Live now · 7 here</div>
+          </div>
+        </div>
+
+        <!-- Character set -->
+        <div class="charset">
+          <h3>Character set</h3>
+          <div class="glyphs">
+            <div class="row" style="font-weight:700">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+            <div class="row" style="font-weight:500">abcdefghijklmnopqrstuvwxyz</div>
+            <div class="row" style="font-weight:700">0123456789 &amp; — · → ↓ ✓</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         SOURCE SANS 3 — Body
+         ========================================= -->
+    <section class="card source-sans">
+      <div class="card-head">
+        <div>
+          <span class="role">Body · Reading</span>
+          <h2 class="name">Source Sans 3</h2>
+          <p class="descr">An open, humanist sans with generous x-height. Carries body copy, chat, task descriptions — anywhere people read more than a couple of words.</p>
+        </div>
+        <div class="tokens">
+          variable · 200–900<br/>
+          normal · italic<br/>
+          <code>--font-sans</code>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="display">
+          <p class="big">Say hi to the team.<br/><b>We're just getting started.</b></p>
+          <p class="meta">Source Sans 3 · 62 / Regular + Bold</p>
+        </div>
+
+        <div class="ladder">
+          <div class="row"><span class="w">Light 300</span><span class="sample" style="font-weight:300">Three minutes on why down-ballot races decide everything.</span><span class="spec">Source 22/300</span></div>
+          <div class="row"><span class="w">Regular 400</span><span class="sample" style="font-weight:400">Three minutes on why down-ballot races decide everything.</span><span class="spec">Source 22/400</span></div>
+          <div class="row"><span class="w">Semi 600</span><span class="sample" style="font-weight:600">Three minutes on why down-ballot races decide everything.</span><span class="spec">Source 22/600</span></div>
+          <div class="row"><span class="w">Bold 700</span><span class="sample" style="font-weight:700">Three minutes on why down-ballot races decide everything.</span><span class="spec">Source 22/700</span></div>
+          <div class="row"><span class="w">Italic</span><span class="sample" style="font-weight:400;font-style:italic">Three minutes on why down-ballot races decide everything.</span><span class="spec">Source 22/400i</span></div>
+        </div>
+
+        <div class="tokens-grid">
+          <div class="tok">
+            <div class="tok-label">Body LG <code>--text-body-lg</code></div>
+            <div class="preview tok-body-lg">Small business owner in Cedar Rapids breaks down the new healthcare rules — clear, personal, worth sharing.</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Body <code>--text-body</code></div>
+            <div class="preview tok-body">Local reporter walks through early-vote data precinct by precinct. The map at 2:14 is the thing to see.</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Body SM <code>--text-body-sm</code></div>
+            <div class="preview tok-body-sm" style="color:var(--color-text-tertiary)">Sara just pinned a note. 32 points this session. You're on track for the “week-long streak” badge.</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Eyebrow <code>--text-eyebrow</code></div>
+            <div class="preview tok-eyebrow">Live now · 2 of 5 amplified</div>
+          </div>
+        </div>
+
+        <div class="charset">
+          <h3>Character set</h3>
+          <div class="glyphs">
+            <div class="row" style="font-weight:700">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+            <div class="row" style="font-weight:400">abcdefghijklmnopqrstuvwxyz</div>
+            <div class="row" style="font-weight:600">0123456789 &amp; — · → ↓ ✓ “” ‘’ …</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         NEWSREADER — Editorial
+         ========================================= -->
+    <section class="card newsreader">
+      <div class="card-head">
+        <div>
+          <span class="role">Editorial · Accent</span>
+          <h2 class="name">Newsreader</h2>
+          <p class="descr">A lively text serif with warm italics. Used sparingly — for pull-quotes, welcome notes from the organizer, and moments that should feel handwritten instead of systemic.</p>
+        </div>
+        <div class="tokens">
+          variable · 200–800<br/>
+          normal · italic<br/>
+          <code>--font-serif</code>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="display">
+          <p class="big">“Okay team — here we go.”</p>
+          <p class="meta">Newsreader · 68 / Regular Italic</p>
+        </div>
+
+        <div class="ladder">
+          <div class="row"><span class="w">Regular 400</span><span class="sample" style="font-weight:400">A quiet room fills up, one pair of headphones at a time.</span><span class="spec">Newsreader 22/400</span></div>
+          <div class="row"><span class="w">Medium 500</span><span class="sample" style="font-weight:500">A quiet room fills up, one pair of headphones at a time.</span><span class="spec">Newsreader 22/500</span></div>
+          <div class="row"><span class="w">Semi 600</span><span class="sample" style="font-weight:600">A quiet room fills up, one pair of headphones at a time.</span><span class="spec">Newsreader 22/600</span></div>
+          <div class="row"><span class="w">Italic</span><span class="sample" style="font-weight:400;font-style:italic">A quiet room fills up, one pair of headphones at a time.</span><span class="spec">Newsreader 22/400i</span></div>
+          <div class="row"><span class="w">Bold it.</span><span class="sample" style="font-weight:700;font-style:italic">A quiet room fills up, one pair of headphones at a time.</span><span class="spec">Newsreader 22/700i</span></div>
+        </div>
+
+        <div class="tokens-grid">
+          <div class="tok">
+            <div class="tok-label">Pull quote <code>italic 22</code></div>
+            <div class="preview" style="font: italic 500 26px/1.4 var(--font-serif); color: var(--color-text-primary);">“We showed up for each other. That's the whole thing.”</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Welcome note <code>serif 20</code></div>
+            <div class="preview" style="font: italic 400 20px/1.5 var(--font-serif); color: var(--color-text-secondary);">Glad you're here, Kai. Sara's got us kicking off in a few — grab a seat, say hi.</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Section accent <code>serif 28</code></div>
+            <div class="preview" style="font: italic 500 28px/1.25 var(--font-serif); color: var(--color-accent);">This week in Iowa —</div>
+          </div>
+          <div class="tok">
+            <div class="tok-label">Badge flavor <code>serif 14</code></div>
+            <div class="preview" style="font: italic 500 14px/1.5 var(--font-serif); color: var(--color-text-tertiary);">earned for showing up three weeks in a row</div>
+          </div>
+        </div>
+
+        <div class="charset">
+          <h3>Character set · italic</h3>
+          <div class="glyphs">
+            <div class="row" style="font-weight:600">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+            <div class="row" style="font-weight:400">abcdefghijklmnopqrstuvwxyz</div>
+            <div class="row" style="font-weight:500">0123456789 &amp; — · ❧ ❦ “” ‘’</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Pairing demo -->
+  <section class="pairing">
+    <span class="eyebrow">In the wild · a pairing</span>
+    <h2>We stacked enough late nights that it stopped feeling late.</h2>
+    <p>Archivo sets the headline. Source Sans 3 handles the long breath underneath — this paragraph, meta lines, chat bodies. Newsreader arrives once, like a friend who hands you their note.</p>
+    <div class="pull">“Honestly, you all showed up. I was shaky going in — you made it easy.” — Sara M., organizer</div>
+    <p>Back to Source Sans 3 for the wrap. The rhythm is the whole point: structure, then voice, then a beat of warmth, then structure again.</p>
+    <div class="meta">Archivo · Source Sans 3 · Newsreader — all variable</div>
+  </section>
+
+</div>
+</body>
+</html>
