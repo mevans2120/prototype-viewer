@@ -16,18 +16,3 @@ export function formatDate(iso: string): string {
   });
 }
 
-export function gradientFor(seed: string, baseColor?: string): string {
-  const hue = hashHue(seed);
-  const base = baseColor ?? `hsl(${hue}, 60%, 45%)`;
-  const accent = `hsl(${(hue + 40) % 360}, 70%, 65%)`;
-  return `linear-gradient(135deg, ${base} 0%, ${accent} 100%)`;
-}
-
-function hashHue(seed: string): number {
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = (hash << 5) - hash + seed.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash) % 360;
-}

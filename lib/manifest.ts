@@ -4,10 +4,7 @@ import { ManifestSchema, type Manifest, type Prototype, type Project } from "./t
 
 const MANIFEST_PATH = path.join(process.cwd(), "public", "prototypes", "manifest.json");
 
-let cached: Manifest | null = null;
-
 export function loadManifest(): Manifest {
-  if (cached) return cached;
   const raw = fs.readFileSync(MANIFEST_PATH, "utf-8");
   const parsed = JSON.parse(raw);
   const result = ManifestSchema.safeParse(parsed);
@@ -17,8 +14,7 @@ export function loadManifest(): Manifest {
       .join("\n");
     throw new Error(`Invalid manifest.json:\n${issues}`);
   }
-  cached = result.data;
-  return cached;
+  return result.data;
 }
 
 export function getPrototypes(): Prototype[] {
@@ -40,10 +36,3 @@ export function getProject(id: string | undefined): Project | undefined {
   return loadManifest().projects.find((p) => p.id === id);
 }
 
-export function getAllTags(): string[] {
-  const tags = new Set<string>();
-  for (const p of loadManifest().prototypes) {
-    for (const t of p.tags) tags.add(t);
-  }
-  return [...tags].sort();
-}

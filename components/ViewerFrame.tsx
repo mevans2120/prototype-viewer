@@ -277,30 +277,6 @@ export function ViewerFrame({
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           />
         </div>
-
-        {(prototype.description || prototype.notes || prototype.tags.length > 0) ? (
-          <section className="mx-auto mt-6 max-w-3xl rounded-lg border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-950">
-            {prototype.description ? (
-              <Text as="p" size="2" className="mb-3">
-                {prototype.description}
-              </Text>
-            ) : null}
-            {prototype.notes ? (
-              <Text as="p" size="2" color="gray" className="mb-3 italic">
-                {prototype.notes}
-              </Text>
-            ) : null}
-            {prototype.tags.length > 0 ? (
-              <Flex gap="1" wrap="wrap">
-                {prototype.tags.map((tag) => (
-                  <Badge key={tag} color="teal" variant="soft" radius="full">
-                    #{tag}
-                  </Badge>
-                ))}
-              </Flex>
-            ) : null}
-          </section>
-        ) : null}
       </main>
     </Flex>
   );

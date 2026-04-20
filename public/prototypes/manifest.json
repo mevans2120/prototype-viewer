@@ -12,18 +12,18 @@
       "file": "creator-team-chat.html",
       "project": "creator",
       "tags": ["chat", "dashboard", "concept"],
-      "createdAt": "2026-04-15",
+      "createdAt": "2026-04-20",
       "source": "claude-artifact",
       "notes": "V1 — exported from a Claude artifact session."
     },
     {
       "slug": "prosocial-chat-concepts",
-      "title": "ProSocial — Chat Concepts",
+      "title": "Social Banking — Chat Concepts",
       "description": "Multiple chat concept variations for ProSocial. Exploration of layouts and interaction patterns.",
       "file": "prosocial-chat-concepts.html",
       "project": "prosocial",
       "tags": ["chat", "concept", "variations"],
-      "createdAt": "2026-04-16",
+      "createdAt": "2026-04-20",
       "source": "claude-artifact",
       "notes": "Companion to the Creator chat concept — same week.",
       "variantGroups": [
