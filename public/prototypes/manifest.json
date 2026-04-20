@@ -25,7 +25,30 @@
       "tags": ["chat", "concept", "variations"],
       "createdAt": "2026-04-16",
       "source": "claude-artifact",
-      "notes": "Companion to the Creator chat concept — same week."
+      "notes": "Companion to the Creator chat concept — same week.",
+      "variantGroups": [
+        {
+          "id": "concept",
+          "display": "caption",
+          "urlParam": "concept",
+          "options": [
+            {
+              "id": "A",
+              "label": "Chat — Classic dock",
+              "description": "Drawer-style chat in the session bottom bar"
+            }
+          ]
+        },
+        {
+          "id": "view",
+          "display": "tabs",
+          "urlParam": "view",
+          "options": [
+            { "id": "lobby", "label": "Lobby" },
+            { "id": "session", "label": "In session" }
+          ]
+        }
+      ]
     }
   ]
 }

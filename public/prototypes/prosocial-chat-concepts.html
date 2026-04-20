@@ -3,6 +3,51 @@
 <head>
   <meta charset="utf-8">
   <title>ProSocial — Chat concepts</title>
+  <script>
+    /* Prototype Viewer shim:
+       1. Override __TWEAKS__ from URL hash before React boots.
+       2. Hide the in-prototype .cx-switcher nav once the bundler unpacks (CSS in outer
+          shell gets wiped when the bundled inner document replaces documentElement,
+          so we re-inject the rule into the new document.head via MutationObserver). */
+    (function () {
+      var hash = (window.location.hash || "").replace(/^#/, "");
+      var overrides = {};
+      if (hash) {
+        hash.split("&").forEach(function (p) {
+          var i = p.indexOf("=");
+          if (i > 0) {
+            var key = p.slice(0, i);
+            var val = decodeURIComponent(p.slice(i + 1));
+            if (key === "view") overrides.defaultView = val;
+            else if (key === "concept") overrides.defaultConcept = val;
+          }
+        });
+      }
+      if (Object.keys(overrides).length > 0) {
+        var current;
+        Object.defineProperty(window, "__TWEAKS__", {
+          configurable: true,
+          enumerable: true,
+          get: function () { return current; },
+          set: function (v) { current = Object.assign({}, v, overrides); },
+        });
+      }
+
+      /* Bundler replaces documentElement, wiping any styles we append now. Poll for
+         .cx-switcher in the *new* document and inject the hide rule then. */
+      var iv = setInterval(function () {
+        if (!document.querySelector(".cx-switcher")) return;
+        if (!document.getElementById("__pv_hide_switcher")) {
+          var style = document.createElement("style");
+          style.id = "__pv_hide_switcher";
+          style.textContent = ".cx-switcher{display:none !important;}";
+          (document.head || document.documentElement).appendChild(style);
+        }
+        clearInterval(iv);
+      }, 100);
+      setTimeout(function () { clearInterval(iv); }, 15000);
+    })();
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #f5f3ee; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
