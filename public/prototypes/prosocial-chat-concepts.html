@@ -23,6 +23,12 @@
           }
         });
       }
+      /* The inner React app reads view from localStorage["ps.chat.view"], not
+         __TWEAKS__. Persist the hash-provided view there before React boots so
+         our chrome tabs actually drive the iframe's state. */
+      if (overrides.defaultView) {
+        try { window.localStorage.setItem("ps.chat.view", overrides.defaultView); } catch (e) {}
+      }
       if (Object.keys(overrides).length > 0) {
         var current;
         Object.defineProperty(window, "__TWEAKS__", {

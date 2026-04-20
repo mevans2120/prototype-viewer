@@ -13,9 +13,11 @@ import {
   DeviceMobileIcon,
   DeviceTabletIcon,
   LinkIcon,
+  PencilSimpleIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Project, Prototype, VariantGroup, VariantOption } from "@/lib/types";
 import { cn, formatDate } from "@/lib/utils";
+import { EditMetadataDialog } from "./EditMetadataDialog";
 
 type Width = "desktop" | "tablet" | "mobile";
 type PhosphorIcon = ComponentType<{ size?: number; weight?: "fill" | "regular" }>;
@@ -144,6 +146,16 @@ export function ViewerFrame({
                   {project.name}
                 </Badge>
               ) : null}
+              <EditMetadataDialog
+                slug={prototype.slug}
+                title={prototype.title}
+                description={prototype.description}
+                trigger={
+                  <IconButton size="1" variant="ghost" color="gray" aria-label="Edit metadata">
+                    <PencilSimpleIcon size={14} />
+                  </IconButton>
+                }
+              />
             </Flex>
             <Text size="1" color="gray">
               {formatDate(prototype.createdAt)}

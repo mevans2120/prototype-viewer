@@ -2,8 +2,10 @@ import { Container, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { PrototypeCard } from "@/components/PrototypeCard";
 import { getPrototypes } from "@/lib/manifest";
 
-export default function HomePage() {
-  const prototypes = getPrototypes();
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const prototypes = await getPrototypes();
 
   return (
     <Container size="4" px="4" py="8">

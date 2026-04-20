@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { ManifestSchema, type Manifest, type Prototype, type Project } from "./types";
+import { getOverrides, type MetadataOverride, type OverridesMap } from "./overrides";
 
 const MANIFEST_PATH = path.join(process.cwd(), "public", "prototypes", "manifest.json");
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -26,18 +27,39 @@ function load() {
   return cached;
 }
 
+function applyOverride(p: Prototype, o: MetadataOverride | undefined): Prototype {
+  if (!o) return p;
+  return {
+    ...p,
+    ...(o.title ? { title: o.title } : {}),
+    ...(o.description ? { description: o.description } : {}),
+  };
+}
+
+function mergePrototype(p: Prototype, overrides: OverridesMap): Prototype {
+  return applyOverride(p, overrides[p.slug]);
+}
+
 export function loadManifest(): Manifest {
   return load().manifest;
 }
 
-export function getPrototypes(): Prototype[] {
-  return [...load().manifest.prototypes].sort((a, b) =>
-    b.createdAt.localeCompare(a.createdAt),
-  );
+export function getPrototypeSlugs(): string[] {
+  return load().manifest.prototypes.map((p) => p.slug);
 }
 
-export function getPrototype(slug: string): Prototype | undefined {
-  return load().bySlug.get(slug);
+export async function getPrototypes(): Promise<Prototype[]> {
+  const overrides = await getOverrides();
+  return [...load().manifest.prototypes]
+    .map((p) => mergePrototype(p, overrides))
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+export async function getPrototype(slug: string): Promise<Prototype | undefined> {
+  const proto = load().bySlug.get(slug);
+  if (!proto) return undefined;
+  const overrides = await getOverrides();
+  return mergePrototype(proto, overrides);
 }
 
 export function getProject(id: string | undefined): Project | undefined {
