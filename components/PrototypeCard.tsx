@@ -7,9 +7,9 @@ import { EditMetadataDialog } from "./EditMetadataDialog";
 
 export function PrototypeCard({ prototype }: { prototype: Prototype }) {
   return (
-    <div className="group relative">
-      <Link href={`/p/${prototype.slug}/`} className="block">
-        <Card className="transition-transform group-hover:-translate-y-0.5 group-hover:shadow-lg">
+    <div className="group relative h-full">
+      <Link href={`/p/${prototype.slug}/`} className="block h-full">
+        <Card className="h-full transition-transform group-hover:-translate-y-0.5 group-hover:shadow-lg">
           <Flex direction="column" gap="2" p="3">
             <Text size="1" color="gray">
               {formatDate(prototype.createdAt)}
