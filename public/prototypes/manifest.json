@@ -6,6 +6,62 @@
   ],
   "prototypes": [
     {
+      "slug": "people-chat-react",
+      "title": "People app — Chat Concept (React)",
+      "description": "Multi-file React source version of the SwingLeft People chat concept.",
+      "file": "people-chat-react/index.html",
+      "project": "prosocial",
+      "tags": ["chat", "concept", "canvas", "react"],
+      "createdAt": "2026-04-21",
+      "source": "hand-coded",
+      "notes": "Folder-based prototype — loads React UMD + Babel Standalone at runtime."
+    },
+    {
+      "slug": "creator-team-chat-react",
+      "title": "Creator Dashboard — Team Chat (React)",
+      "description": "Multi-file React source version of the Creator team chat concept.",
+      "file": "creator-team-chat-react/index.html",
+      "project": "creator",
+      "tags": ["chat", "dashboard", "concept", "react"],
+      "createdAt": "2026-04-21",
+      "source": "hand-coded",
+      "notes": "Folder-based prototype — loads React UMD + Babel Standalone at runtime."
+    },
+    {
+      "slug": "prosocial-chat-react",
+      "title": "Social Banking — Chat Concepts (React)",
+      "description": "Multi-file React source version of the ProSocial chat concepts.",
+      "file": "prosocial-chat-react/index.html",
+      "project": "prosocial",
+      "tags": ["chat", "concept", "variations", "react"],
+      "createdAt": "2026-04-21",
+      "source": "hand-coded",
+      "notes": "Folder-based prototype. Hash-shim routes the viewer's view tabs into localStorage (\"ps.chat.view\") before React boots.",
+      "variantGroups": [
+        {
+          "id": "concept",
+          "display": "caption",
+          "urlParam": "concept",
+          "options": [
+            {
+              "id": "A",
+              "label": "Chat — Classic dock",
+              "description": "Drawer-style chat in the session bottom bar"
+            }
+          ]
+        },
+        {
+          "id": "view",
+          "display": "tabs",
+          "urlParam": "view",
+          "options": [
+            { "id": "lobby", "label": "Lobby" },
+            { "id": "session", "label": "In session" }
+          ]
+        }
+      ]
+    },
+    {
       "slug": "people-chat-refined",
       "title": "People app — Chat Concept",
       "description": "Chat concept for the SwingLeft People app.",
