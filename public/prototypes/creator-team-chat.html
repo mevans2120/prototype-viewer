@@ -3,6 +3,30 @@
 <head>
   <meta charset="utf-8">
   <title>Creator Dashboard — Team Chat concept</title>
+  <script>
+    /* Prototype Viewer shim — inject overrides AFTER the bundler swaps the
+       documentElement, so they survive the doc replacement. */
+    (function () {
+      var iv = setInterval(function () {
+        if (!document.querySelector(".chat-panel")) return;
+        if (!document.getElementById("__pv_overrides")) {
+          var style = document.createElement("style");
+          style.id = "__pv_overrides";
+          style.textContent =
+            /* Hide animated dots next to inline "is typing…" */
+            ".typing .dots{display:none !important;}" +
+            /* Hide the duplicate typing/visibility line in the composer footer */
+            ".chat-dock-hint span:nth-child(2){display:none !important;}" +
+            /* Simplify cohort header subtitle to just '3 online' */
+            ".chat-header-meta{font-size:0 !important;}" +
+            ".chat-header-meta::before{content:\"3 online\";font-size:13px;color:inherit;line-height:1.4;}";
+          (document.head || document.documentElement).appendChild(style);
+        }
+        clearInterval(iv);
+      }, 100);
+      setTimeout(function () { clearInterval(iv); }, 15000);
+    })();
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #f5f3ee; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }

@@ -40,10 +40,11 @@
       }
 
       /* Bundler replaces documentElement, wiping any styles we append now. Poll for
-         .cx-switcher in the *new* document and inject the hide rule then. Also
-         narrows the ConceptADock composer so it doesn't extend to the drawer's
-         right edge — leaves the composer in the bottom bar inline with the chat
-         icon, but with breathing room before the drawer's visible edge. */
+         .cx-switcher in the *new* document and inject the rules then.
+         - Hide .cx-switcher (replaced by outer viewer chrome).
+         - Narrow the composer so it doesn't push against the drawer's right edge.
+         - When drawer is open, clip the bottom bar to 400px so its right edge
+           aligns with the drawer's right edge (instead of running full-viewport). */
       var iv, to;
       iv = setInterval(function () {
         if (!document.querySelector(".cx-switcher")) return;
@@ -52,7 +53,10 @@
           style.id = "__pv_overrides";
           style.textContent =
             ".cx-switcher{display:none !important;}" +
-            ".cA-bar-composer{width:260px !important;}";
+            ".cA-bar-composer{width:260px !important;}" +
+            ".cA-drawer.open ~ .cA-bar{right:auto !important;width:400px !important;}" +
+            ".cA-drawer.open ~ .cA-bar .cA-bar-cta{display:none !important;}" +
+            ".cA-drawer.open ~ .cA-bar .cA-bar-inner{padding-right:0 !important;}";
           (document.head || document.documentElement).appendChild(style);
         }
         clearInterval(iv);
